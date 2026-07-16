@@ -1,0 +1,26 @@
+type Quote {
+  id: ID!
+  text: String!
+  author: String!
+}
+
+input NewQuote {
+  text: String!
+  author: String!
+}
+
+input UpdateQuote {
+  text: String!
+  author: String!
+}
+
+type Query {
+  quotes: [Quote!]!
+  quote(id: ID!): Quote
+}
+
+type Mutation {
+  createQuote(input: NewQuote!): Quote!
+  updateQuote(id: ID!, input: UpdateQuote!): Quote
+  deleteQuote(id: ID!): Boolean!
+}
