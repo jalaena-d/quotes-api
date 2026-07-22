@@ -1,16 +1,16 @@
 package main
 
 import (
-	"quotes-api/controller"
-	"quotes-api/entity"
-	"quotes-api/service"
+	"quotes-api/models"
+	"quotes-api/repositories"
+	"quotes-api/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 var (
-	quoteService    service.QuoteService       = service.New()
-	quoteController controller.QuoteController = controller.New(quoteService)
+	quoteService    repositories.QuoteService = repositories.NewQuoteRepository()
+	quoteController services.QuoteController  = services.NewQuoteService(quoteService)
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 	})
 
 	server.POST("/quotes/bulk", func(ctx *gin.Context) {
-		var quotes []entity.Quote
+		var quotes []models.Quote
 		ctx.BindJSON(&quotes)
 
 		ctx.JSON(201, quoteController.SaveMany(quotes))
@@ -43,7 +43,7 @@ func main() {
 	})
 
 	server.POST("/quotes", func(ctx *gin.Context) {
-		var quote entity.Quote
+		var quote models.Quote
 		ctx.BindJSON(&quote)
 
 		ctx.JSON(201, quoteController.Save(quote))
@@ -52,7 +52,7 @@ func main() {
 	server.PUT("/quotes/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 
-		var quote entity.Quote
+		var quote models.Quote
 		ctx.BindJSON(&quote)
 
 		updatedQuote, found := quoteController.Update(id, quote)

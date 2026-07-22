@@ -9,7 +9,7 @@ input NewQuote {
   author: String!
 }
 
-input UpdateQuote {
+input UpdateQuoteInput {
   text: String!
   author: String!
 }

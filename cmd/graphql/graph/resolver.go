@@ -1,8 +1,19 @@
 package graph
 
-// This file will not be regenerated automatically.
-//
-// It serves as dependency injection for your app, add any dependencies you require
-// here.
+import (
+	"quotes-api/repositories"
+	"quotes-api/services"
+)
 
-type Resolver struct{}
+type Resolver struct {
+	QuoteController services.QuoteController
+}
+
+func NewResolver() *Resolver {
+	quoteService := repositories.NewQuoteRepository()
+	quoteController := services.NewQuoteService(quoteService)
+
+	return &Resolver{
+		QuoteController: quoteController,
+	}
+}

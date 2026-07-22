@@ -8,8 +8,8 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"graphql/graph/model"
 	"math"
+	"quotes-api/cmd/graphql/graph/model"
 	"strconv"
 	"sync/atomic"
 
@@ -233,7 +233,7 @@ func newExecutionContext(
 	deferredResults chan graphql.DeferredResult,
 ) *executionContext {
 	return &executionContext{
-		ExecutionContextState: graphql.NewExecutionContextState[ResolverRoot, DirectiveRoot, ComplexityRoot](
+		ExecutionContextState: graphql.NewExecutionContextState(
 			opCtx,
 			(*graphql.ExecutableSchemaState[ResolverRoot, DirectiveRoot, ComplexityRoot])(execSchema),
 			parsedSchema,

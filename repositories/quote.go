@@ -1,35 +1,36 @@
-package service
+package repositories
 
 import (
-	"quotes-api/entity"
-	"strconv"
+	"quotes-api/models"
+
+	"github.com/google/uuid"
 )
 
 type QuoteService interface {
-	Save(quote entity.Quote) entity.Quote
-	SaveMany(quotes []entity.Quote) []entity.Quote
-	FindAll() []entity.Quote
-	FindByID(id string) (entity.Quote, bool)
-	Update(id string, quote entity.Quote) (entity.Quote, bool)
+	Save(quote models.Quote) models.Quote
+	SaveMany(quotes []models.Quote) []models.Quote
+	FindAll() []models.Quote
+	FindByID(id string) (models.Quote, bool)
+	Update(id string, quote models.Quote) (models.Quote, bool)
 	Delete(id string) bool
 }
 
 type quoteService struct {
-	quotes []entity.Quote
+	quotes []models.Quote
 }
 
-func New() QuoteService {
+func NewQuoteRepository() QuoteService {
 	return &quoteService{}
 }
 
-func (service *quoteService) Save(quote entity.Quote) entity.Quote {
-	quote.ID = strconv.Itoa(len(service.quotes) + 1)
+func (service *quoteService) Save(quote models.Quote) models.Quote {
+	quote.ID = uuid.NewString()
 	service.quotes = append(service.quotes, quote)
 	return quote
 }
 
-func (service *quoteService) SaveMany(quotes []entity.Quote) []entity.Quote {
-	savedQuotes := []entity.Quote{}
+func (service *quoteService) SaveMany(quotes []models.Quote) []models.Quote {
+	savedQuotes := []models.Quote{}
 
 	for _, quote := range quotes {
 		savedQuote := service.Save(quote)
@@ -39,21 +40,21 @@ func (service *quoteService) SaveMany(quotes []entity.Quote) []entity.Quote {
 	return savedQuotes
 }
 
-func (service *quoteService) FindAll() []entity.Quote {
+func (service *quoteService) FindAll() []models.Quote {
 	return service.quotes
 }
 
-func (service *quoteService) FindByID(id string) (entity.Quote, bool) {
+func (service *quoteService) FindByID(id string) (models.Quote, bool) {
 	for _, quote := range service.quotes {
 		if quote.ID == id {
 			return quote, true
 		}
 	}
 
-	return entity.Quote{}, false
+	return models.Quote{}, false
 }
 
-func (service *quoteService) Update(id string, updatedQuote entity.Quote) (entity.Quote, bool) {
+func (service *quoteService) Update(id string, updatedQuote models.Quote) (models.Quote, bool) {
 	for index, quote := range service.quotes {
 		if quote.ID == id {
 			updatedQuote.ID = id
@@ -62,7 +63,7 @@ func (service *quoteService) Update(id string, updatedQuote entity.Quote) (entit
 		}
 	}
 
-	return entity.Quote{}, false
+	return models.Quote{}, false
 }
 
 func (service *quoteService) Delete(id string) bool {
