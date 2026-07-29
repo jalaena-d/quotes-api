@@ -4,7 +4,7 @@ type Quote {
   author: String!
 }
 
-input NewQuote {
+input NewQuoteInput {
   text: String!
   author: String!
 }
@@ -20,7 +20,7 @@ type Query {
 }
 
 type Mutation {
-  createQuote(input: NewQuote!): Quote!
-  updateQuote(id: ID!, input: UpdateQuote!): Quote
+  createQuote(input: NewQuoteInput!): Quote!
+  updateQuote(id: ID!, input: UpdateQuoteInput!): Quote
   deleteQuote(id: ID!): Boolean!
 }
