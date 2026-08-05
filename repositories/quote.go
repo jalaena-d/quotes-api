@@ -1,8 +1,12 @@
 package repositories
 
 import (
+	"context"
+	"log"
+	"os"
 	"quotes-api/models"
 
+	"cloud.google.com/go/firestore"
 	"github.com/google/uuid"
 )
 
@@ -20,7 +24,38 @@ type quoteService struct {
 }
 
 func NewQuoteRepository() QuoteService {
-	return &quoteService{}
+	defaultRepository := &quoteService{}
+
+	if os.Getenv("USE_FIRESTORE") != "true" {
+		return defaultRepository
+	}
+
+	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
+	if projectID == "" {
+		log.Println("USE_FIRESTORE=true but GOOGLE_CLOUD_PROJECT is empty; falling back to in-memory repository")
+		return defaultRepository
+	}
+
+	ctx := context.Background()
+	databaseID := os.Getenv("FIRESTORE_DATABASE")
+
+	var (
+		client *firestore.Client
+		err    error
+	)
+
+	if databaseID != "" {
+		client, err = firestore.NewClientWithDatabase(ctx, projectID, databaseID)
+	} else {
+		client, err = firestore.NewClient(ctx, projectID)
+	}
+
+	if err != nil {
+		log.Printf("failed to create Firestore client; falling back to in-memory repository: %v", err)
+		return defaultRepository
+	}
+
+	return NewFirestoreQuoteRepository(client, os.Getenv("FIRESTORE_COLLECTION"))
 }
 
 func (service *quoteService) Save(quote models.Quote) models.Quote {
