@@ -7,8 +7,8 @@ import (
 	"quotes-api/models"
 	"strings"
 
-	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/compute/metadata"
+	"cloud.google.com/go/firestore"
 	"github.com/google/uuid"
 	"golang.org/x/oauth2/google"
 )
