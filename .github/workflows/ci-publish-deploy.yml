@@ -86,7 +86,7 @@ jobs:
     needs: go-checks
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    environment: quotes-api-deploy
+    environment: quotes-api-gcp
     permissions:
       contents: read
     env:
