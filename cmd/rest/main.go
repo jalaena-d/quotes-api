@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	"os"
 	"quotes-api/models"
 	"quotes-api/repositories"
 	"quotes-api/services"
@@ -84,5 +86,11 @@ func main() {
 		})
 	})
 
-	server.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("starting REST server on port %s", port)
+	server.Run(":" + port)
 }
