@@ -7,6 +7,8 @@ ENV GOPROXY=direct
 # RUN cp /certs/*.crt /usr/local/share/ca-certificates/
 # RUN update-ca-certificates
 
+RUN apk add --no-cache git
+
 WORKDIR /
 
 COPY go.mod go.sum ./
