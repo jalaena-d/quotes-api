@@ -2,10 +2,10 @@ FROM golang:1.26.5-alpine AS builder
 
 ENV GOPROXY=direct
 
-COPY ./certs /certs
-RUN apk add --no-cache ca-certificates git
-RUN cp /certs/*.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+# COPY ./certs /certs
+# RUN apk add --no-cache ca-certificates git
+# RUN cp /certs/*.crt /usr/local/share/ca-certificates/
+# RUN update-ca-certificates
 
 WORKDIR /
 
